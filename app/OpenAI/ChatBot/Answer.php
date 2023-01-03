@@ -1,6 +1,6 @@
 <?php
 
-namespace App\OpenAI\PromptProviders;
+namespace App\OpenAI\ChatBot;
 
 class Answer
 {

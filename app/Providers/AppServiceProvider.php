@@ -2,11 +2,10 @@
 
 namespace App\Providers;
 
-use App\OpenAI\ClientIntelligenceService;
-use App\OpenAI\IntelligenceService;
-use App\OpenAI\IntelligenceServiceFactory;
-use App\OpenAI\OpenAIGateway;
-use App\OpenAI\PromptProviders\BusinessDescriptionPromptProvider;
+use App\OpenAI\ChatBot\ChatBot;
+use App\OpenAI\ChatBot\ClientChatBot;
+use App\OpenAI\ChatBot\RateLimitChatBot;
+use App\OpenAI\ChatBot\OpenAIGateway;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,14 +21,10 @@ class AppServiceProvider extends ServiceProvider
             return new OpenAIGateway(config('services.openai'));
         });
 
-        $this->app->bind(IntelligenceService::class, function($app){
-            return new ClientIntelligenceService($app->make(OpenAIGateway::class));
-        });
-
-        $this->app->bind(IntelligenceServiceFactory::class, function($app){
-            return new IntelligenceServiceFactory(
-                $app->make(IntelligenceService::class),
-                new BusinessDescriptionPromptProvider()
+        $this->app->bind(ChatBot::class, function($app){
+            return new RateLimitChatBot(
+                new ClientChatBot($app->make(OpenAIGateway::class)),
+                'limiter_TBD'
             );
         });
     }

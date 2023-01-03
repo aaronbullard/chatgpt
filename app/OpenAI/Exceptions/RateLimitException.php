@@ -4,7 +4,7 @@ namespace App\OpenAI\Exceptions;
 
 use App\Exceptions\DomainException;
 
-class InvalidRequestError extends DomainException
+class RateLimitException extends DomainException
 {
     
 }
