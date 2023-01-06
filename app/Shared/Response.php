@@ -2,7 +2,7 @@
 
 namespace App\Shared;
 
-abstract class Response 
+interface Response 
 {
-    abstract public function isError(): bool;
+    public function isError(): bool;
 }

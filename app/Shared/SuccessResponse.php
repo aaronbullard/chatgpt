@@ -2,7 +2,7 @@
 
 namespace App\Shared;
 
-class SuccessResponse extends Response
+class SuccessResponse implements Response
 {
     public function isError(): bool
     {

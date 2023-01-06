@@ -4,7 +4,7 @@ namespace App\Shared;
 
 use Throwable;
 
-class ErrorResponse extends Response
+class ErrorResponse implements Response
 {
     public function __construct(private string $message, private ?Throwable $exception = null){}
 
