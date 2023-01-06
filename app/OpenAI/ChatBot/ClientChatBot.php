@@ -2,9 +2,9 @@
 
 namespace App\OpenAI\ChatBot;
 
-use stdClass;
 use Throwable;
 use App\OpenAI\Exceptions\ChatBotClientException;
+use App\OpenAI\Gateways\OpenAIGateway;
 use App\OpenAI\PromptProviders\PromptProvider;
 
 class ClientChatBot implements ChatBot
@@ -17,14 +17,23 @@ class ClientChatBot implements ChatBot
      * @param string $method
      * @param PromptProvider $promptProvider
      * @throws ChatBotClientException
-     * @return stdClass
+     * @return ChatBotResponse
      */
-    public function execute(string $method, PromptProvider $promptProvider): stdClass
+    public function execute(string $method, PromptProvider $promptProvider): ChatBotResponse
     {
         try {
-            return $this->client->$method($promptProvider->toArray());
+            $response = new ChatBotResponse(
+                $this->client->$method($promptProvider->toArray())
+            );
         } catch (Throwable $e) {
             throw ChatBotClientException::from($e);
         }
+
+        if ($response->isError()) {
+            throw new ChatBotClientException($response->getError());
+        }
+
+        return $response;
+        
     }
 }

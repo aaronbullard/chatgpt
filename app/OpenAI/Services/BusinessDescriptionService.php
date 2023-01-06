@@ -4,9 +4,10 @@ namespace App\OpenAI\Services;
 
 use Throwable;
 use App\OpenAI\ChatBot\ChatBot;
-use App\OpenAI\ChatBot\Meta;
 use App\OpenAI\Exceptions\ChatBotClientException;
 use App\OpenAI\PromptProviders\BusinessDescriptionPromptProvider;
+use App\Shared\ErrorResponse;
+use App\Shared\Response;
 
 class BusinessDescriptionService
 {
@@ -19,24 +20,22 @@ class BusinessDescriptionService
      * @throws ChatBotClientException
      * @return BusinessDescriptionResponse
      */
-    public function execute(BusinessDescriptionRequest $request): BusinessDescriptionResponse
+    public function execute(BusinessDescriptionRequest $request): Response
     {
-        $prompt = new BusinessDescriptionPromptProvider(
-            $request->businessId,
-            $request->description
-        );
-
         try {
+            $prompt = new BusinessDescriptionPromptProvider(
+                $request->businessId,
+                $request->description
+            );
+
             $response = $this->chatBot->execute('completion', $prompt);
 
             return new BusinessDescriptionResponse(
-                $response->choices[0]->text,
-                new Meta($response)
+                $response->getDescription(),
+                $response->getBody()
             );
-        } catch (ChatBotClientException $e) {
-            throw $e; 
         } catch (Throwable $e) {
-            throw ChatBotClientException::from($e);
+            return ErrorResponse::from($e);
         }
     }
 }

@@ -2,12 +2,17 @@
 
 namespace App\OpenAI\Services;
 
-use App\OpenAI\ChatBot\Meta;
+use App\Shared\SuccessResponse;
 
-class BusinessDescriptionResponse
+class BusinessDescriptionResponse extends SuccessResponse
 {
     public function __construct(
         public readonly string $description,
-        public readonly Meta $meta
+        public readonly array $body
     ){}
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
 }
