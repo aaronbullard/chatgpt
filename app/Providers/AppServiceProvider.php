@@ -34,7 +34,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UsageChecker::class, function(){
             $checker = Mockery::mock(UsageChecker::class);
             $checker->shouldReceive('usageAvailable')->andReturn(true);
-            $checker->shouldReceive('recordUsage')->andReturn($checker);
             return $checker;
         });
 

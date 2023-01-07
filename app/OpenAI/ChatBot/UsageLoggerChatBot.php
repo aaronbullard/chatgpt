@@ -20,7 +20,7 @@ class UsageLoggerChatBot implements ChatBot
         $this->logger->log(
             $promptProvider->getProfileId(),
             get_class($promptProvider),
-            $response->getUsage()
+            $response
         );
 
         return $response;

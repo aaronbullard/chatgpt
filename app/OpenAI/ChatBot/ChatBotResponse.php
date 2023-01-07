@@ -39,6 +39,13 @@ class ChatBotResponse
         }
     }
 
+    public function getId(): string
+    {
+        return $this->safely(function($response){
+            return $response['id'];
+        });
+    }
+
     public function getDescription(): string
     {
         return $this->safely(function($response){

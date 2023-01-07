@@ -16,13 +16,6 @@ class UsageLimitChatBot implements ChatBot
             throw new UsageLimitException(UsageLimitException::LIMIT_REACHED);
         }
 
-        $response = $this->chatBot->execute($method, $providerPrompt);
-
-        $this->checker->recordUsage(
-            $providerPrompt->getProfileId(),
-            $response->getUsage()
-        );
-
-        return $response;
+        return $this->chatBot->execute($method, $providerPrompt);
     }
 }
