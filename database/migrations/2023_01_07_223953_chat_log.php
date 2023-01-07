@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chat_log', function (Blueprint $table) {
+        Schema::create('chat_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('profile_id');
-            $table->string('provider_prompt');
-            $table->string('response_id');
+            $table->string('prompt_provider');
             $table->json('response');
-            $table->unsignedInteger('usage_prompt_tokens');
-            $table->unsignedInteger('usage_completion_tokens');
+            $table->boolean('is_error')->default(false);
+            $table->unsignedInteger('usage_prompt_tokens')->default(0);
+            $table->unsignedInteger('usage_completion_tokens')->default(0);
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chat_log');
+        Schema::dropIfExists('chat_logs');
     }
 };

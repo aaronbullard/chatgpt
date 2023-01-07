@@ -13,10 +13,6 @@ class UsageLoggerChatBot implements ChatBot
     {
         $response = $this->chatBot->execute($method, $promptProvider);
 
-        if ($response->isError()) {
-            return $response;
-        }
-
         $this->logger->log(
             $promptProvider->getProfileId(),
             get_class($promptProvider),

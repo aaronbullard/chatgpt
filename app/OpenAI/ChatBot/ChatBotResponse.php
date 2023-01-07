@@ -53,13 +53,22 @@ class ChatBotResponse
         });
     }
 
+    public function hasUsage(): bool
+    {
+        return isset($this->response['usage']);
+    }
+
     public function getUsage(): Usage
     {
         return $this->safely(function($response){
-            return new Usage(
-                $response['usage']['prompt_tokens'],
-                $response['usage']['completion_tokens']
-            );
+            if ($this->hasUsage()) {
+                return new Usage(
+                    $response['usage']['prompt_tokens'],
+                    $response['usage']['completion_tokens']
+                );
+            }
+
+            return new Usage(0, 0);
         });
     }
 }

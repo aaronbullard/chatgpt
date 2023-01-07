@@ -2,13 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
-use Throwable;
-
-class DomainException extends Exception
+class DomainException extends AppException
 {
-    public static function from(Throwable $e): self
-    {
-        return new static($e->getMessage(), $e->getCode(), $e);
-    }
+
 }
