@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\ChatLog;
 use Mockery;
 use App\OpenAI\ChatBot\ChatBot;
 use App\OpenAI\ChatBot\ClientChatBot;
@@ -26,9 +27,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(Logger::class, function(){
-            $logger = Mockery::mock(Logger::class);
-            $logger->shouldReceive('log')->andReturn(null);
-            return $logger;
+            return new ChatLog();
         });
 
         $this->app->bind(UsageChecker::class, function(){

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature\Models;
+
 use Tests\TestCase;
 use App\Models\ChatLog;
 use App\OpenAI\ChatBot\ChatBotResponse;
@@ -11,7 +13,7 @@ class ChatLogTest extends TestCase
 
     public function test_create_chat_log_instance()
     {
-        $chatLog = ChatLog::log(
+        $id = (new ChatLog)->log(
             42,
             'BusinessDescriptionPromptProvider',
             new ChatBotResponse([
@@ -25,7 +27,7 @@ class ChatLogTest extends TestCase
         );
 
         $this->assertDatabaseHas('chat_logs', [
-            'id' => $chatLog->id,
+            'id' => $id,
             'prompt_provider' => 'BusinessDescriptionPromptProvider',
             'is_error' => false,
             'usage_total_tokens' => 4
