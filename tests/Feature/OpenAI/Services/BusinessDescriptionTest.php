@@ -4,10 +4,14 @@ namespace Tests\Feature\OpenAI\Services;
 
 use Mockery;
 use Mockery\MockInterface;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
+use App\Models\ChatLog;
+use App\Shared\Response;
 use App\Shared\ErrorResponse;
 use App\OpenAI\Contracts\Logger;
+use App\OpenAI\Contracts\UsageChecker;
 use App\OpenAI\Gateways\OpenAIGateway;
+use App\OpenAI\Exceptions\UsageLimitException;
 use App\OpenAI\Services\BusinessDescriptionRequest;
 use App\OpenAI\Services\BusinessDescriptionResponse;
 use App\OpenAI\Services\BusinessDescriptionService;
@@ -33,17 +37,22 @@ class BusinessDescriptionServiceTest extends TestCase
         );
     }
 
-    public function test_successful_call(): BusinessDescriptionResponse
+    private function callService(): Response
     {
-        $this->mockCallback($this->response);
-        
         $service = $this->app->make(BusinessDescriptionService::class);
 
         $description = "What is 2 + 2?";
 
-        $response = $service->execute(
+        return $service->execute(
             new BusinessDescriptionRequest($this->profileId, $description)
         );
+    }
+
+    public function test_successful_call(): BusinessDescriptionResponse
+    {
+        $this->mockCallback($this->response);
+        
+        $response = $this->callService();
 
         $this->assertInstanceOf(BusinessDescriptionResponse::class, $response);
         $this->assertEquals($response->getDescription(), "2 + 2 = 4");
@@ -55,15 +64,10 @@ class BusinessDescriptionServiceTest extends TestCase
     {
         $this->mockCallback($this->error);
 
-        $service = $this->app->make(BusinessDescriptionService::class);
-
-        $description = "What is 2 + 2?";
-
-        $response = $service->execute(
-            new BusinessDescriptionRequest($this->profileId, $description)
-        );
+        $response = $this->callService();
 
         $this->assertInstanceOf(ErrorResponse::class, $response);
+        $this->assertTrue($response->isError());
         $this->assertEquals($response->getError(), '42 is not of type string');
     }
 
@@ -75,5 +79,21 @@ class BusinessDescriptionServiceTest extends TestCase
             'profile_id' => $this->profileId,
             'usage_total_tokens' => $response->getBody()['usage']['total_tokens']
         ]);
+    }
+
+    public function test_usage_limit_chat_bot()
+    {
+        $this->instance(
+            UsageChecker::class,
+            Mockery::mock(UsageChecker::class, function(MockInterface $mock) {
+                $mock->shouldReceive('usageAvailable')->once()->andReturn(false);
+            })
+        );
+
+        $response = $this->callService();
+
+        $this->assertInstanceOf(ErrorResponse::class, $response);
+        $this->assertTrue($response->isError());
+        $this->assertEquals($response->getError(), UsageLimitException::LIMIT_REACHED);
     }
 }

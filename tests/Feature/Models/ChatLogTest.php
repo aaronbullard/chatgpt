@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Models;
 
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 use App\Models\ChatLog;
 use App\OpenAI\ChatBot\ChatBotResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
