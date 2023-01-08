@@ -17,6 +17,7 @@ class ChatLogTest extends TestCase
             new ChatBotResponse([
                 'model' => 'text-davinci-003',
                 'usage' => [
+                    'total_tokens' => 4,
                     'prompt_tokens' => 2,
                     'completion_tokens' => 2
                 ]
@@ -27,8 +28,7 @@ class ChatLogTest extends TestCase
             'id' => $chatLog->id,
             'prompt_provider' => 'BusinessDescriptionPromptProvider',
             'is_error' => false,
-            'usage_prompt_tokens' => 2,
-            'usage_completion_tokens' => 2
+            'usage_total_tokens' => 4
         ]);
     }
 }

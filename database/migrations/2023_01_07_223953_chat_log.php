@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('prompt_provider');
             $table->json('response');
             $table->boolean('is_error')->default(false);
-            $table->unsignedInteger('usage_prompt_tokens')->default(0);
-            $table->unsignedInteger('usage_completion_tokens')->default(0);
+            $table->unsignedInteger('usage_total_tokens')->default(0);
             $table->timestamps();
         });
     }

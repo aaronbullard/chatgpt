@@ -63,12 +63,13 @@ class ChatBotResponse
         return $this->safely(function($response){
             if ($this->hasUsage()) {
                 return new Usage(
-                    $response['usage']['prompt_tokens'],
-                    $response['usage']['completion_tokens']
+                    $response['usage']['total_tokens'],
+                    $response['usage']['prompt_tokens'] ?? null,
+                    $response['usage']['completion_tokens'] ?? null
                 );
             }
 
-            return new Usage(0, 0);
+            return new Usage(0, 0, 0);
         });
     }
 }

@@ -5,22 +5,24 @@ namespace App\OpenAI\ChatBot;
 class Usage
 {
     public function __construct(
-        private int $promptTokens, 
-        private int $completionTokens
+        private int $totalTokens,
+        private ?int $promptTokens = null, 
+        private ?int $completionTokens = null,
+        
     ){}
 
-    public function promptTokens(): int
+    public function totalTokens(): int
+    {
+       return $this->totalTokens;
+    }
+
+    public function promptTokens():?int
     {
         return $this->promptTokens;
     }
 
-    public function completionTokens(): int
+    public function completionTokens(): ?int
     {
         return $this->completionTokens;
-    }
-
-    public function totalTokens(): int
-    {
-        return $this->promptTokens() + $this->completionTokens();
     }
 }

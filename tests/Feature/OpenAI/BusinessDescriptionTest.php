@@ -6,7 +6,6 @@ use Mockery;
 use Mockery\MockInterface;
 use Tests\TestCase;
 use App\OpenAI\Gateways\OpenAIGateway;
-use App\OpenAI\ChatBot\ChatBotResponse;
 use App\OpenAI\Services\BusinessDescriptionRequest;
 use App\OpenAI\Services\BusinessDescriptionResponse;
 use App\OpenAI\Services\BusinessDescriptionService;

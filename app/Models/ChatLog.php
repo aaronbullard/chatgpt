@@ -53,30 +53,10 @@ class ChatLog extends Model
                 'prompt_provider' => $promptProvider,
                 'response' => $response->getBody(),
                 'is_error' => $response->isError(),
-                'usage_prompt_tokens' => $response->getUsage()->promptTokens(),
-                'usage_completion_tokens' => $response->getUsage()->completionTokens()
+                'usage_total_tokens' => $response->getUsage()->totalTokens()
             ]);
         } catch (ChatBotResponseException $e) {
             throw ChatLogException::from($e);
         }
-    }
-
-    /**
-     * Interact with the user's first name.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function usage(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value, $attributes) => new Usage(
-                $attributes['usage_prompt_tokens'],
-                $attributes['usage_completion_tokens']
-            ),
-            set: fn (Usage $usage) => [
-                'usage_prompt_tokens' => $usage->promptTokens(),
-                'usage_completion_tokens' => $usage->completionTokens()
-            ],
-        );
     }
 }
