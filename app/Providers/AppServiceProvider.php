@@ -11,6 +11,7 @@ use App\OpenAI\ChatBot\UsageLimitChatBot;
 use App\OpenAI\ChatBot\UsageLoggerChatBot;
 use App\OpenAI\Contracts\Logger;
 use App\OpenAI\Contracts\UsageChecker;
+use App\Specifications\UsageLimitSpecification;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,11 +31,7 @@ class AppServiceProvider extends ServiceProvider
             return new ChatLog();
         });
 
-        $this->app->bind(UsageChecker::class, function(){
-            $checker = Mockery::mock(UsageChecker::class);
-            $checker->shouldReceive('usageAvailable')->andReturn(true);
-            return $checker;
-        });
+        $this->app->bind(UsageChecker::class, UsageLimitSpecification::class);
 
         $this->app->bind(ChatBot::class, function($app){
             $bot = new ClientChatBot($app->make(OpenAIGateway::class));

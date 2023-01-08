@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use DateTime;
 use App\OpenAI\ChatBot\ChatBotResponse;
 use App\Exceptions\ChatLogException;
 use App\OpenAI\Contracts\Logger;
+use App\OpenAI\Contracts\UsageChecker;
 use App\OpenAI\Exceptions\ChatBotResponseException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

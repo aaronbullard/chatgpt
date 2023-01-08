@@ -21,6 +21,9 @@ return new class extends Migration
             $table->boolean('is_error')->default(false);
             $table->unsignedInteger('usage_total_tokens')->default(0);
             $table->timestamps();
+
+            $table->index('profile_id');
+            $table->index(['profile_id', 'created_at']);
         });
     }
 

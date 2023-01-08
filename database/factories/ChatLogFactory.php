@@ -47,7 +47,8 @@ class ChatLogFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'response' => json_decode($this->error, true),
-                'is_error' => true
+                'is_error' => true,
+                'usage_total_tokens' => 0
             ];
         });
     }

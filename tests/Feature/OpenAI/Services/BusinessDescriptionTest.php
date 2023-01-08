@@ -30,6 +30,13 @@ class BusinessDescriptionServiceTest extends TestCase
     private function mockCallback($response)
     {
         $this->instance(
+            UsageChecker::class,
+            Mockery::mock(UsageChecker::class, function(MockInterface $mock) {
+                $mock->shouldReceive('usageAvailable')->once()->andReturn(true);
+            })
+        );
+
+        $this->instance(
             OpenAIGateway::class,
             Mockery::mock(OpenAIGateway::class, function(MockInterface $mock) use ($response){
                 $mock->shouldReceive('completion')->once()->andReturn(json_decode($response, true));

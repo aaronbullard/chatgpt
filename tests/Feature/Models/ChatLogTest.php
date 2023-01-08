@@ -5,13 +5,10 @@ namespace Tests\Feature\Models;
 use Tests\Feature\TestCase;
 use App\Models\ChatLog;
 use App\OpenAI\ChatBot\ChatBotResponse;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ChatLogTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function test_create_chat_log_instance()
+    public function test_log_method()
     {
         $id = (new ChatLog)->log(
             42,
