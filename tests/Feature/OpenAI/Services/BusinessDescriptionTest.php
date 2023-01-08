@@ -23,18 +23,6 @@ class BusinessDescriptionServiceTest extends TestCase
 
     private $profileId = 42;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        // $this->instance(
-        //     Logger::class,
-        //     Mockery::mock(Logger::class, function(MockInterface $mock){
-        //         $mock->shouldReceive('log')->andReturn(1);
-        //     })
-        // );
-    }
-
     private function mockCallback($response)
     {
         $this->instance(
